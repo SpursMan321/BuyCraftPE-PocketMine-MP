@@ -4,7 +4,7 @@
 __PocketMine Plugin__
 name=BuyCraftPE
 description=Create a server shop and obtain donations!
-version=0.5.0
+version=1.0.0dev
 author=BuyCraftPE
 class=BuyCraft
 apiversion=11,12
@@ -22,17 +22,30 @@ class BuyCraft implements Plugin
     public function init()
     {
 
-        $this->config = new Config($this->api->plugin->configPath($this)."config.yml", CONFIG_YAML, array(
-            "Key" => 000000,
-        ));
+        if(!file_exists($this->api->plugin->configPath($this) . "config.yml"))
+        {
+            $this->config = new Config($this->api->plugin->configPath($this)."config.yml", CONFIG_YAML, array(
+                "Key" => 000000,
+            ));
+        }
 
-        $this->api->console->register("buycraft", "<KEY|BUY>", array($this, "CommandHandler"));
+            $this->api->console->register("buycraft", "<KEY|BUY>", array($this, "CommandHandler"));
 
-        $this->api->console->alias("bc","buycraft");
+            $this->api->console->alias("bc","buycraft");
 
-        $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
+            $this->api->ban->cmdWhitelist("buycraft");
 
-            console("[INFO] BuyCraftPE Loaded!");
+            $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
+
+                console("[INFO] [BuyCraftPE] Checking BuyCraftPE Server Status...");
+                    //Code to ping BuyCraftPE website goes here!
+                    $status = //Code for server status goes here!
+                        if($status == true){
+                            console("[INFO] BuyCraftPE Server Status: OK");
+                            console("[INFO] BuyCraftPE Loaded!");
+                               }else{
+                                   console("[WARNING] Could not connect to BuyCraftPE Service!");
+                               }
     }
 
     public function CommandHandler($cmd, $params, $issuer, $alias)
@@ -45,33 +58,38 @@ class BuyCraft implements Plugin
 
                      return "Usage: /BuyCraft <KEY|BUY>";
 
-                     }elseif($params[0] == "key"){
+                         }elseif($params[0] == "key"){
 
-                         if(isset($params[1])){
+                             if($this->api->ban->isOP($issuer) || !($issuer instanceof Player)){
+                                 if(isset($params[1])){
 
-                             $this->config["Key"] = $params[1];
+                                     $this->config["Key"] = $params[1];
                          
-                             $this->api->plugin->writeYAML($this->api->plugin->configPath($this) . "config.yml", $this->config);
-                             $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
-                             return "[BuyCraftPE] Your BuyCrafPEt KEY has been saved!";
+                                     $this->api->plugin->writeYAML($this->api->plugin->configPath($this) . "config.yml", $this->config);
+                                     $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
+                                     //Code to send data to main BuyCraftPE server goes here!
+                                     return "[BuyCraftPE] Your BuyCrafPEt KEY has been updated!";
 
-                         }else{
+                                         }else{
 
-                             return "Usage: /BuyCraft key <KEY>";
+                                             return "Usage: /BuyCraft key <KEY>";
 
-                         }
-                     }elseif($params[0] == "buy"){
-                         if(isset($params[1])){
-                                 $itemid = strtoupper($params[1]);
+                                         }
+                                                 }else{
+                                                     return "[BuyCraftPE] You must be an operator or on the console to change the BuyCraftPE KEY!";
+                                                         }elseif($params[0] == "buy"){
+                                                             if(isset($params[1])){
+                                                                 //Code to gather Items goes here!
+                                                                 $itemid = strtoupper($params[1]);
 
-                                 return "[BuyCraftPE] This feature will be available in a later BuyCraftPE Update!";
+                                                                 return "[BuyCraftPE] This feature will be available in a later BuyCraftPE Update!";
 
-                        }
-                    }else{
+                                                                 }
+                                                                     }else{
 
-                    return "Usage: /BuyCraft buy <ID>";
+                                                                         return "Usage: /BuyCraft buy <ID>";
 
-                }
+                    }
             break;
         }
     }
