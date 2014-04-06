@@ -38,8 +38,7 @@ class BuyCraft implements Plugin
             $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
 
                 console("[INFO] [BuyCraftPE] Checking BuyCraftPE Server Status...");
-                    //Code to ping BuyCraftPE website goes here!
-                    $status = //Code for server status goes here!
+                    $status = $Query->Connect( 'BUYCRAFT_HOST' );
                         if($status == true){
                             console("[INFO] BuyCraftPE Server Status: OK");
                             console("[INFO] BuyCraftPE Loaded!");
