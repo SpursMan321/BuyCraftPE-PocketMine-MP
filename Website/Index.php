@@ -1,5 +1,7 @@
 <?php
 
-//Placeholder for Index.php
+/*
+Placeholder for Index.php
+*/
 
 ?>
