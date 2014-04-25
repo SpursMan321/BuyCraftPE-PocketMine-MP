@@ -86,11 +86,12 @@ class buyLoop extends Thread {
   //private $auth;
   public $stop;
   public $key;
-  public function __construct($k) {
+  public function __construct($k,$s) {
     $this->b = array();
     $this->stop = false;
     $this->start();
     $this->key = $k;
+    $this->s = $s;
     return $this->establishConnection();
   }
 
@@ -106,11 +107,17 @@ class buyLoop extends Thread {
     exit(0);
   }
   public function establishConnection() {
- //  if(file_get_contents(BASE_URL . "/api/init.php?key=" . $this->key) !== false) return true;
+ // if(file_get_contents(BASE_URL . "/api/init.php?key=" . $this->key) !== false) return true;
     return false;
 $this->stop = true:
   }
   public function closeConnection() {
     //Close current socket and maybe send off a packet to the web interface
+  }
+  public fuction encrypt($str){
+    return base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($this->s), $str, MCRYPT_MODE_CBC, md5(md5($this->s)))), true, 301);
+  }
+  public function decrypt($str){
+   return rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($this->s), base64_decode($str), MCRYPT_MODE_CBC, md5(md5($this->s))), "\0");
   }
 }
