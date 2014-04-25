@@ -98,7 +98,7 @@ class BuyCraft implements Plugin
         console("[INFO] BuyCraftPE Unloaded!");
     }
 }
-class checkLoop extends Thread{
+class buyLoop extends Thread{
 	public $b;
 	//private $auth;
 	public $stop;
