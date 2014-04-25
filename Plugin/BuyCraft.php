@@ -16,6 +16,7 @@ class BuyCraft implements Plugin{
   public function __construct(ServerAPI $api, $server = false)
   {
     $this->api = $api;
+    define("BASE_URL","http://oururl.co")
   }
 
   public function init()
@@ -25,17 +26,14 @@ class BuyCraft implements Plugin{
     "Secret" => 000000
     ));
 
+    $this->api->console->register("buycraft", "<KEY|BUY>", array($this, "CommandHandler"));
+    $this->api->console->alias("bc", "buycraft");
+    $this->api->ban->cmdWhitelist("buycraft");
     $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
-
     console("[INFO] [BuyCraftPE] Checking BuyCraftPE Server Status...");
     $this->buyLoop = new buyLoop($this->config["Key"],$this->config["Secret"]);
     if ($this->buyLoop) {
       console("[INFO] BuyCraftPE Server Status: OK");
-
-      $this->api->console->register("buycraft", "<KEY|BUY>", array($this, "CommandHandler"));
-      $this->api->console->alias("bc", "buycraft");
-      $this->api->ban->cmdWhitelist("buycraft");
-
       console("[INFO] BuyCraftPE Loaded!");
     }
     else console("[WARNING] Could not connect to BuyCraftPE Service!");
@@ -85,12 +83,14 @@ class buyLoop extends Thread {
   //private $auth;
   public $stop;
   public $key;
+  private $ip;
   public function __construct($k,$s) {
     $this->b = array();
     $this->stop = false;
     $this->start();
     $this->key = $k;
     $this->s = $s;
+    $this->ip =
     return $this->establishConnection();
   }
 
@@ -101,17 +101,26 @@ class buyLoop extends Thread {
   }
   public function run() {
     while ($this->stop === false) {
-    	//Request new purchases
+    if($this->ip !== Utils::getIP(true)){
+     console("[ERROR] BuyCraftPE doesn't like Dynamic IP's and can't yet bind to them.");
+      $this->stop();
+    }
+    
+    
+    //Add socket read and write here
+    
+    
     }
     exit(0);
   }
   public function establishConnection() {
- // if(file_get_contents(BASE_URL . "/api/init.php?key=" . $this->key) !== false) return true;
+  if(file_get_contents(BASE_URL . "/api/init.php?key=" . $this->key . "&secret=" . encrypt(($this->ip = Utils::getIP(true))))) !== false) return true;
     return false;
-$this->stop = true:
+    $this->stop = true:
   }
   public function closeConnection() {
-    //Close current socket and maybe send off a packet to the web interface
+    if(file_get_contents(BASE_URL . "/api/dispose.php?key=" . $this->key . "&secret=" . encrypt($this->ip))) !== false) return true;
+    return false;
   }
   public function encrypt($str){
     return base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($this->s), $str, MCRYPT_MODE_CBC, md5(md5($this->s)))), true, 301);
