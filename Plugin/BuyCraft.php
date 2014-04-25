@@ -21,13 +21,9 @@ class BuyCraft implements Plugin
 
     public function init()
     {
-
-        if(!file_exists($this->api->plugin->configPath($this) . "config.yml"))
-        {
             $this->config = new Config($this->api->plugin->configPath($this)."config.yml", CONFIG_YAML, array(
                 "Key" => 000000,
             ));
-        }
 
             $this->api->console->register("buycraft", "<KEY|BUY>", array($this, "CommandHandler"));
 
@@ -38,13 +34,12 @@ class BuyCraft implements Plugin
             $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
 
                 console("[INFO] [BuyCraftPE] Checking BuyCraftPE Server Status...");
-                    $status = $Query->Connect( 'BUYCRAFT_HOST' );
-                        if($status == true){
+                    $buyLoop = new buyLoop($this->config["Key"]);
+                        if($buyLoop){
                             console("[INFO] BuyCraftPE Server Status: OK");
                             console("[INFO] BuyCraftPE Loaded!");
-                               }else{
-                                   console("[WARNING] Could not connect to BuyCraftPE Service!");
                                }
+               else console("[WARNING] Could not connect to BuyCraftPE Service!");
     }
 
     public function CommandHandler($cmd, $params, $issuer, $alias)
@@ -66,7 +61,6 @@ class BuyCraft implements Plugin
                          
                                      $this->api->plugin->writeYAML($this->api->plugin->configPath($this) . "config.yml", $this->config);
                                      $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
-                                     //Code to send data to main BuyCraftPE server goes here!
                                      return "[BuyCraftPE] Your BuyCrafPEt KEY has been updated!";
 
                                          }else{
@@ -108,6 +102,7 @@ class buyLoop extends Thread{
 		$this->stop = false;
 		$this->start();
                 $this->key = $k;
+                return $this->establishConnection();
 	}
 
 	public function stop(){
@@ -122,4 +117,8 @@ class buyLoop extends Thread{
 		}
 exit(0);
 	}
+public function establishConnection(){
+//Handshake with service and send secret, ensure validitity 
+return false;
+}
 }
