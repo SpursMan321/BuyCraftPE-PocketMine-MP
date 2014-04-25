@@ -61,7 +61,7 @@ class BuyCraft implements Plugin
                          
                                      $this->api->plugin->writeYAML($this->api->plugin->configPath($this) . "config.yml", $this->config);
                                      $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
-                                     return "[BuyCraftPE] Your BuyCrafPEt KEY has been updated!";
+                                     return "[BuyCraftPE] Your BuyCraftPE KEY has been updated! Restart to see changes.";
 
                                          }else{
 
@@ -118,7 +118,8 @@ class buyLoop extends Thread{
 exit(0);
 	}
 public function establishConnection(){
-//Handshake with service and send secret, ensure validitity 
+//Handshake with service and send secret, ensure validitity if invalid stop thread
 return false;
+$this->stop = true:
 }
 }
