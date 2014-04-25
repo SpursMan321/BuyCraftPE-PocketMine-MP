@@ -98,5 +98,26 @@ class BuyCraft implements Plugin
         console("[INFO] BuyCraftPE Unloaded!");
     }
 }
+class checkLoop extends Thread{
+	public $b;
+	//private $auth;
+	public $stop;
+	public function __construct(){
+		$this->b = array();
+		$this->stop = false;
+		$this->start();
+	}
 
-?>
+	public function stop(){
+		$this->stop = true;
+		return $b;
+
+	}
+	public function run(){
+		while($this->stop === false){
+
+		
+		}
+exit(0);
+	}
+}
