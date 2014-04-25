@@ -102,10 +102,12 @@ class buyLoop extends Thread{
 	public $b;
 	//private $auth;
 	public $stop;
-	public function __construct(){
+        public $key;
+	public function __construct($k){
 		$this->b = array();
 		$this->stop = false;
 		$this->start();
+                $this->key = $k;
 	}
 
 	public function stop(){
