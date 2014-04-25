@@ -114,7 +114,7 @@ $this->stop = true:
   public function closeConnection() {
     //Close current socket and maybe send off a packet to the web interface
   }
-  public fuction encrypt($str){
+  public function encrypt($str){
     return base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($this->s), $str, MCRYPT_MODE_CBC, md5(md5($this->s)))), true, 301);
   }
   public function decrypt($str){
