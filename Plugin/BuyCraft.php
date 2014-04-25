@@ -22,6 +22,7 @@ class BuyCraft implements Plugin{
   {
     $this->config = new Config($this->api->plugin->configPath($this)."config.yml", CONFIG_YAML, array(
     "Key" => 000000, 
+    "Secret" => 000000
     ));
 
     $this->api->console->register("buycraft", "<KEY|BUY>", array($this, "CommandHandler"));
@@ -33,7 +34,7 @@ class BuyCraft implements Plugin{
     $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
 
     console("[INFO] [BuyCraftPE] Checking BuyCraftPE Server Status...");
-    $this->buyLoop = new buyLoop($this->config["Key"]);
+    $this->buyLoop = new buyLoop($this->config["Key"],$this->config["Secret"]);
     if ($this->buyLoop) {
       console("[INFO] BuyCraftPE Server Status: OK");
       console("[INFO] BuyCraftPE Loaded!");
@@ -46,20 +47,20 @@ class BuyCraft implements Plugin{
     switch(strtolower($cmd))
     {
       case "buycraft":
-      if ($params[0] == "key") {
+      if ($params[0] == "login") {
 
         if ($this->api->ban->isOP($issuer) || !($issuer instanceof Player)) {
-          if (isset($params[1])) {
+          if (isset($params[2])) {
 
             $this->config["Key"] = $params[1];
-
+            $this->config["Secret"] = $params[2];
             $this->api->plugin->writeYAML($this->api->plugin->configPath($this) . "config.yml", $this->config);
             $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
-            return "[BuyCraftPE] Your BuyCraftPE KEY has been updated! Restart to see changes.";
+            return "[BuyCraftPE] Your BuyCraftPE Details has been updated! Restart to see changes.";
           }
-          else  return "Usage: /BuyCraft key <KEY>";
+          else  return "Usage: /BuyCraft login <KEY> <SECRET>";
         }
-        else return "[BuyCraftPE] You must be an operator or on the console to change the BuyCraftPE KEY!";
+        else return "[BuyCraftPE] You must be an operator or on the console to change the BuyCraftPE Details!";
       }
       elseif($params[0] == "buy") {
         if (isset($params[1])) {
@@ -105,7 +106,7 @@ class buyLoop extends Thread {
     exit(0);
   }
   public function establishConnection() {
-    //Handshake with service and send secret, ensure validitity if invalid stop thread
+ //  if(file_get_contents(BASE_URL . "/api/init.php?key=" . $this->key) !== false) return true;
     return false;
 $this->stop = true:
   }
