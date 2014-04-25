@@ -100,7 +100,7 @@ class buyLoop extends Thread {
   }
   public function run() {
     while ($this->stop === false) {
-    	//Listen on socket
+    	//Request new purchases
     }
     exit(0);
   }
