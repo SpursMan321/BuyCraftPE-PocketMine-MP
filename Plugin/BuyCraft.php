@@ -25,18 +25,17 @@ class BuyCraft implements Plugin{
     "Secret" => 000000
     ));
 
-    $this->api->console->register("buycraft", "<KEY|BUY>", array($this, "CommandHandler"));
-
-    $this->api->console->alias("bc", "buycraft");
-
-    $this->api->ban->cmdWhitelist("buycraft");
-
     $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
 
     console("[INFO] [BuyCraftPE] Checking BuyCraftPE Server Status...");
     $this->buyLoop = new buyLoop($this->config["Key"],$this->config["Secret"]);
     if ($this->buyLoop) {
       console("[INFO] BuyCraftPE Server Status: OK");
+
+      $this->api->console->register("buycraft", "<KEY|BUY>", array($this, "CommandHandler"));
+      $this->api->console->alias("bc", "buycraft");
+      $this->api->ban->cmdWhitelist("buycraft");
+
       console("[INFO] BuyCraftPE Loaded!");
     }
     else console("[WARNING] Could not connect to BuyCraftPE Service!");
