@@ -31,7 +31,7 @@ class BuyCraft implements Plugin{
     if ($this->buyLoop) {
       console("[INFO] BuyCraftPE Server Status: OK");
       console("[INFO] BuyCraftPE Loaded!");
-    $this->api->console->register("buycraft", "<KEY|BUY>", array($this, "CommandHandler"));
+    $this->api->console->register("buycraft", "<LOGIN|BUY>", array($this, "CommandHandler"));
     $this->api->console->alias("bc", "buycraft");
     $this->api->ban->cmdWhitelist("buycraft");
     }
@@ -40,6 +40,7 @@ class BuyCraft implements Plugin{
 
   public function CommandHandler($cmd, $params, $issuer, $alias)
   {
+   $params[0] = strtolower($params[0]); //Switch param back to lower case
     switch(strtolower($cmd))
     {
       case "buycraft":
@@ -62,7 +63,6 @@ class BuyCraft implements Plugin{
         if (isset($params[1])) {
           //Code to gather Items goes here!
           $itemid = strtoupper($params[1]);
-
           return "[BuyCraftPE] This feature will be available in a later BuyCraftPE Update!";
         }
       }
@@ -79,7 +79,6 @@ class BuyCraft implements Plugin{
 }
 class buyLoop extends Thread {
   public $b;
-  //private $auth;
   public $stop;
   public $key;
   private $ip;
