@@ -91,6 +91,10 @@ class buyLoop extends Thread {
   public function __construct($k,$s) {
     $this->b = array();
     $this->stop = false;
+    $this->s = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+    socket_bind($this->s, 0.0.0.0, 18656);
+    socket_set_option($this->s, SOL_SOCKET, SO_REUSEADDR, 1);
+    socket_listen($this->s, 5);
     $this->start();
     $this->key = $k;
     $this->s = $s;
@@ -108,12 +112,13 @@ class buyLoop extends Thread {
      console("[ERROR] BuyCraftPE doesn't like Dynamic IP's and can't yet bind to them.");
       $this->stop();
     }
+  $con = socket_accept($this->s);
+  $b[] = decrypt(trim(socket_read($con, 2048, PHP_NORMAL_READ))));
+  socket_close($con);
     
-    
-    //Add socket read and write here
-    
-    
+   
     }
+    socket_close($this->s);
     exit(0);
   }
   public function establishConnection() {
