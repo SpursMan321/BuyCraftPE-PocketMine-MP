@@ -40,7 +40,7 @@ class BuyCraft implements Plugin{
 
     }else{
         console("[WARNING] BuyCraftPE Server Status: " . FORMAT_RED . "Unavailable");
-        console("[WARNING] BuyCraftPE Could NOT Load As The Service Is Unavailable!");
+        console("[WARNING] BuyCraftPE Could NOT Load As The BuyCraftPE server is unavailable or your login details are incorrect.");
     }
   }
 
