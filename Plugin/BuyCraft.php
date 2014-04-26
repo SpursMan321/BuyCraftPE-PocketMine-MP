@@ -98,7 +98,6 @@ class buyLoop extends Thread {
     $this->start();
     $this->key = $k;
     $this->s = $s;
-    $this->ip =
     return $this->establishConnection();
   }
 
