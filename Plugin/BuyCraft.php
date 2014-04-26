@@ -113,7 +113,8 @@ class buyLoop extends Thread {
       $this->stop();
     }
   $con = socket_accept($this->s);
-  $b[] = decrypt(trim(socket_read($con, 2048, PHP_NORMAL_READ))));
+if(socket_getpeername($con) == gethostbyname(BASE_URL)) //Check that connection is from interface
+$b[] = decrypt(trim(socket_read($con, 2048, PHP_NORMAL_READ))));
   socket_close($con);
     
    
