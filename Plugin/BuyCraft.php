@@ -26,15 +26,15 @@ class BuyCraft implements Plugin{
     "Secret" => 000000
     ));
     $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
-    console("[INFO] [BuyCraftPE] Checking BuyCraftPE Server Status...");
+    console("[INFO] Checking BuyCraftPE Server Status...");
     $this->buyLoop = new buyLoop($this->config["Key"],$this->config["Secret"]);
     if ($this->buyLoop) {
       console("[INFO] BuyCraftPE Server Status: " . FORMAT_GREEN . "OK");
-      console("[INFO] Continuing To Load BuyCraftPE...");
+      console("[INFO] Loading BuyCraftPE...");
 
       $this->api->console->register("buycraft", "<LOGIN|BUY>", array($this, "CommandHandler"));
-      $this->api->console->alias("bc", "buycraft");
       $this->api->ban->cmdWhitelist("buycraft");
+      $this->api->console->alias("bc", "buycraft");
 
       console("[INFO] BuyCraftPE Loaded!");
 
@@ -59,7 +59,7 @@ class BuyCraft implements Plugin{
             $this->config["Secret"] = $params[2];
             $this->api->plugin->writeYAML($this->api->plugin->configPath($this) . "config.yml", $this->config);
             $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
-            return "[BuyCraftPE] Your BuyCraftPE Details has been updated! Restart the server to see changes.";
+            return "[BuyCraftPE] Your BuyCraftPE Details have been updated! Restart the server to see changes.";
           }
           else  return "Usage: /BuyCraft login <KEY> <SECRET>";
         }
