@@ -5,7 +5,7 @@ __PocketMine Plugin__
 name=BuyCraftPE
 description=Create a server shop and obtain donations!
 version=1.0.0dev
-author=BuyCraftPE
+author=BuyCraftPE Team
 class=BuyCraft
 apiversion=11,12
 */
