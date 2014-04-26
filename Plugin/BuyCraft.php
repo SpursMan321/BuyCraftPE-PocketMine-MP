@@ -16,7 +16,7 @@ class BuyCraft implements Plugin{
   public function __construct(ServerAPI $api, $server = false)
   {
     $this->api = $api;
-    define("BASE_URL","http://BuyCraftPE.net")
+    define("BASE_URL","http://BuyCraftPE.net");
   }
 
   public function init()
