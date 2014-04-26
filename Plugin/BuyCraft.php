@@ -100,7 +100,6 @@ class buyLoop extends Thread {
 
   public function stop() {
     $this->stop = true;
-    $this->closeConnection();
     return $b;
   }
   public function run() {
@@ -121,10 +120,6 @@ class buyLoop extends Thread {
   if(file_get_contents(BASE_URL . "/api/init.php?key=" . $this->key . "&secret=" . encrypt(($this->ip = Utils::getIP(true))))) !== false) return true;
     return false;
     $this->stop = true:
-  }
-  public function closeConnection() {
-    if(file_get_contents(BASE_URL . "/api/dispose.php?key=" . $this->key . "&secret=" . encrypt($this->ip))) !== false) return true;
-    return false;
   }
   public function encrypt($str){
     return base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($this->s), $str, MCRYPT_MODE_CBC, md5(md5($this->s)))), true, 301);
