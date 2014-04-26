@@ -2,13 +2,13 @@
 
 /*
 __PocketMine Plugin__
- name=BuyCraftPE
- description=Create a server shop and obtain donations!
- version=1.0.0dev
- author=BuyCraftPE
- class=BuyCraft
- apiversion=11,12
- */
+name=BuyCraftPE
+description=Create a server shop and obtain donations!
+version=1.0.0dev
+author=BuyCraftPE
+class=BuyCraft
+apiversion=11,12
+*/
 
 class BuyCraft implements Plugin{
   private $api;
@@ -16,7 +16,7 @@ class BuyCraft implements Plugin{
   public function __construct(ServerAPI $api, $server = false)
   {
     $this->api = $api;
-    define("BASE_URL","http://oururl.co")
+    define("BASE_URL","http://BuyCraftPE.net")
   }
 
   public function init()
@@ -29,13 +29,19 @@ class BuyCraft implements Plugin{
     console("[INFO] [BuyCraftPE] Checking BuyCraftPE Server Status...");
     $this->buyLoop = new buyLoop($this->config["Key"],$this->config["Secret"]);
     if ($this->buyLoop) {
-      console("[INFO] BuyCraftPE Server Status: OK");
+      console("[INFO] BuyCraftPE Server Status: " . FORMAT_GREEN . "OK");
+      console("[INFO] Continuing To Load BuyCraftPE...");
+
+      $this->api->console->register("buycraft", "<LOGIN|BUY>", array($this, "CommandHandler"));
+      $this->api->console->alias("bc", "buycraft");
+      $this->api->ban->cmdWhitelist("buycraft");
+
       console("[INFO] BuyCraftPE Loaded!");
-    $this->api->console->register("buycraft", "<LOGIN|BUY>", array($this, "CommandHandler"));
-    $this->api->console->alias("bc", "buycraft");
-    $this->api->ban->cmdWhitelist("buycraft");
+
+    }else{
+        console("[WARNING] BuyCraftPE Server Status: " . FORMAT_RED . "Unavailable");
+        console("[WARNING] BuyCraftPE Could NOT Load As The Service Is Unavailable!");
     }
-    else console("[WARNING] Could not connect to BuyCraftPE Service!");
   }
 
   public function CommandHandler($cmd, $params, $issuer, $alias)
@@ -53,7 +59,7 @@ class BuyCraft implements Plugin{
             $this->config["Secret"] = $params[2];
             $this->api->plugin->writeYAML($this->api->plugin->configPath($this) . "config.yml", $this->config);
             $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
-            return "[BuyCraftPE] Your BuyCraftPE Details has been updated! Restart to see changes.";
+            return "[BuyCraftPE] Your BuyCraftPE Details has been updated! Restart the server to see changes.";
           }
           else  return "Usage: /BuyCraft login <KEY> <SECRET>";
         }
