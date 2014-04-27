@@ -16,7 +16,7 @@ class BuyCraft implements Plugin{
   public function __construct(ServerAPI $api, $server = false)
   {
     $this->api = $api;
-    define("BASE_URL","http://BuyCraftPE.net");
+    define("BASE_URL","https://BuyCraftPE.net");
   }
 
   public function init()
@@ -114,24 +114,21 @@ class buyLoop extends Thread {
      console("[ERROR] BuyCraftPE doesn't like Dynamic IP's and can't yet bind to them.");
       $this->stop();
     }
+    else $this->ip = Utils::getIP();
   $con = socket_accept($this->sock);
-if(socket_getpeername($con) == gethostbyname(BASE_URL)) $b[] = $this->decrypt(trim(socket_read($con, 2048, PHP_NORMAL_READ)));
+  if(socket_getpeername($con) == gethostbyname(BASE_URL)) $b[] = $this->decrypt(trim(socket_read($con, 2048, PHP_NORMAL_READ)));
   socket_close($con);
-    
-   
     }
     socket_close($this->sock);
     exit(0);
   }
   public function establishConnection() {
-  if(file_get_contents(BASE_URL . "/api/init.php?key=" . $this->key . "&secret=" . $this->encrypt(($this->ip = Utils::getIP(true)))) !== false) return true;
+  if(Utils::curl_get(BASE_URL . "/api/init.php?key=" . $this->key . "&secret=" . $this->s) !== false) return true;
     return false;
     $this->stop = true;
   }
-  public function encrypt($str){
-    return base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($this->s), $str, MCRYPT_MODE_CBC, md5(md5($this->s))), true, 301);
-  }
   public function decrypt($str){
-   return rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($this->s), base64_decode($str), MCRYPT_MODE_CBC, md5(md5($this->s))), "\0");
+    //Decrypt string using secret
+    return $str;
   }
 }
