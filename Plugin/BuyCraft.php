@@ -23,8 +23,7 @@ class BuyCraft implements Plugin{
   {
     $this->config = new Config($this->api->plugin->configPath($this)."config.yml", CONFIG_YAML, array(
     "Key" => 000000, 
-    "Secret" => 000000,
-    "WebstoreURL" => "https://ServerName.BuyCraftPE.net/"
+    "Secret" => 000000
     ));
     $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
     console("[INFO] Checking BuyCraftPE Server Status And Login Credentials...");
@@ -70,7 +69,7 @@ class BuyCraft implements Plugin{
         if (isset($params[1])) {
           //Code to gather Items goes here!
           $itemid = strtoupper($params[1]);
-          return "[BuyCraftPE] To purchase items for this server, please visit: " . $this->config["WebstoreURL"];
+          return "[BuyCraftPE] To purchase items for this server, please visit: " . $this->buyLoop->storeUrl;
         }
       }
       else return "Usage: /BuyCraft buy <ID>";
@@ -81,7 +80,7 @@ class BuyCraft implements Plugin{
   public function __destruct()
   {
     console("[INFO] BuyCraftPE Unloaded!");
-    $this->buyLoop.stop();
+    $this->buyLoop->stop();
   }
 }
 class buyLoop extends Thread {
@@ -124,7 +123,7 @@ class buyLoop extends Thread {
     exit(0);
   }
   public function establishConnection() {
-  if(Utils::curl_get(BASE_URL . "/api/init.php?key=" . $this->key . "&secret=" . $this->s) !== false) return true;
+  if(($this->storeUrl = Utils::curl_get(BASE_URL . "/api/init.php?key=" . $this->key . "&secret=" . $this->s)) !== false) return true;
     return false;
     $this->stop = true;
   }
