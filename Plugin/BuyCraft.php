@@ -23,10 +23,11 @@ class BuyCraft implements Plugin{
   {
     $this->config = new Config($this->api->plugin->configPath($this)."config.yml", CONFIG_YAML, array(
     "Key" => 000000, 
-    "Secret" => 000000
+    "Secret" => 000000,
+    "WebstoreURL" => "https://ServerName.BuyCraftPE.net/"
     ));
     $this->config = $this->api->plugin->readYAML($this->api->plugin->configPath($this) . "config.yml");
-    console("[INFO] Checking BuyCraftPE Server Status...");
+    console("[INFO] Checking BuyCraftPE Server Status And Login Credentials...");
     $this->buyLoop = new buyLoop($this->config["Key"],$this->config["Secret"]);
     if ($this->buyLoop) {
       console("[INFO] BuyCraftPE Server Status: " . FORMAT_GREEN . "OK");
@@ -40,7 +41,7 @@ class BuyCraft implements Plugin{
 
     }else{
         console("[WARNING] BuyCraftPE Server Status: " . FORMAT_RED . "Unavailable");
-        console("[WARNING] BuyCraftPE Could NOT Load As The BuyCraftPE server is unavailable or your login details are incorrect.");
+        console("[WARNING] Unable to load BuyCraftPE as the server is unavailable or your login details are incorrect.");
     }
   }
 
@@ -69,7 +70,7 @@ class BuyCraft implements Plugin{
         if (isset($params[1])) {
           //Code to gather Items goes here!
           $itemid = strtoupper($params[1]);
-          return "[BuyCraftPE] This feature will be available in a later BuyCraftPE Update!";
+          return "[BuyCraftPE] To purchase items for this server, please visit: " . $this->config["WebstoreURL"];
         }
       }
       else return "Usage: /BuyCraft buy <ID>";
