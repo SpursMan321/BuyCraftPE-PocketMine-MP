@@ -2,3 +2,17 @@ name: BuyCraftPE
 main: BuyCraftPE/MainClass
 version: 1.0.0dev
 api: 1.0.0
+
+load: POSTWORLD
+author: BuyCraftPE Team
+description: BuyCraft system for PocketMine-MP!
+website: https://github.com/BuyCraftPE
+commands:
+  example:
+    description: BuyCraftPE command
+    usage: /buycraft <LOGIN|BUY>
+    permission: buycraftpe.command.buycraft
+  permissions:
+    buycraftpe.command.buycraft
+      description: "Allows user to run the buycraft command"
+      default: true
